@@ -21,7 +21,7 @@ class Pokemon(Dataset):
             if not os.path.isdir(os.path.join(root, name)):
                 continue
             self.name2label[name] = len(self.name2label.keys())
-        print(self.name2label)
+        # print(self.name2label)
 
         # image_path, image_label
         self.images, self.labels = self.load_csv('images.csv')

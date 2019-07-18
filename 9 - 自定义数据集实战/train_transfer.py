@@ -5,7 +5,9 @@ import torchvision
 from torch.utils.data import DataLoader
 
 from pokemon import Pokemon
-from resnet import ResNet18
+# from resnet import ResNet18
+from torchvision.models import resnet18
+from utils import Flatten
 
 
 
@@ -41,7 +43,14 @@ def evaluate(model, loader):
 
 
 def main():
-    model = ResNet18(5).to(device)
+    # model = ResNet18(5).to(device)
+    # transfer learning
+    trained_model = resnet18(pretrained=True)
+    model = nn.Sequential(
+        *list(trained_model.children())[:-1],  # [b, 512, 1, 1]
+        Flatten(),  # [b, 512, 1, 1] => [b, 512]
+        nn.Linear(512, 5)
+    ).to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr)
     criteon = nn.CrossEntropyLoss()
 

@@ -29,6 +29,20 @@ class AE(nn.Module):
 
     def  forward(self, x):
         """
+        x: [b, 1, 28, 28]
         """
-        
+        batchsz = x.size(0)
+        # flatten
+        x = x.view(batchsz, 784)
+        # encoder
+        x = self.encoder(x)
+        # decoder
+        x = self.decoder(x)
+        # reshape
+        x = x.view(batchsz, 1, 28, 28)
+
+        return x
+
+
+
 
